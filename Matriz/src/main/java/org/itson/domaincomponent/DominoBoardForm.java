@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import static java.lang.Math.random;
 import java.util.LinkedList;
 import java.util.Random;
 import javax.swing.BorderFactory;
@@ -44,16 +45,21 @@ public class DominoBoardForm extends JFrame {
 
         // Generar fichas de dominó aleatorias para cada celda
         Pool pool = Pool.getInstance();
+        
+        //se crean las fichas
         LinkedList<Tile> tiles = pool.createDominoTiles();
-        LinkedList<Tile> shuffledTiles = new LinkedList<>(tiles);
-        shuffleTiles(shuffledTiles);
-
+  
+         int counter = 0;
         for (int i = 0; i < rows; i++) {
+           
             for (int j = 0; j < columns; j++) {
-                if (!shuffledTiles.isEmpty()) {
-                    board.setTileAtPosition(i, j, shuffledTiles.poll());
+                if (!tiles.isEmpty()) {
+                    counter++;
+                    board.setTileAtPosition(i, j, tiles.get((int) (Math.random() * 27)));
                 }
+                
             }
+            
         }
     }
 
@@ -89,8 +95,8 @@ public class DominoBoardForm extends JFrame {
     }
 
     public static void main(String[] args) throws PoolException {
-        int rows = 4;
-        int columns = 4;
+        int rows = 8;
+        int columns = 8;
 
         Board board = new Board(rows, columns);
         DominoBoardForm form = new DominoBoardForm(board);
