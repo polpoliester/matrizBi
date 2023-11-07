@@ -2,17 +2,17 @@ package org.itson.domaincomponent;
 
 import java.awt.Color;
 import java.awt.GridLayout;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.util.LinkedList;
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import org.itson.domaincomponent.domain.Board;
 import org.itson.domaincomponent.domain.Pool;
 import org.itson.domaincomponent.domain.Tile;
 import org.itson.domaincomponent.exceptions.PoolException;
+import org.itson.mvc.tile.TileController;
+import org.itson.mvc.tile.TileModel;
+import org.itson.mvc.tile.TileView;
 
 public class DominoBoardForm extends JFrame {
 
@@ -35,30 +35,19 @@ public class DominoBoardForm extends JFrame {
             for (int j = 0; j < columns; j++) {
                 if (!tiles.isEmpty()) {
                     Tile tile = tiles.poll();
+                    
+                    // Crear una instancia de TileModel, TileView y TileController
+                    TileModel tileModel = new TileModel(tile); // Debes crear un constructor que acepte un Tile
+                    TileView tileView = new TileView(tileModel);
+                    TileController tileController = new TileController(tileModel, tileView);
+
+                    // Configurar el panel de celda
                     JPanel cellPanel = new JPanel();
                     cellPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-                    cellPanel.addMouseListener(new CellClickListener(tile, i, j));
+                    cellPanel.addMouseListener(tileController);
                     add(cellPanel);
                 }
             }
-        }
-    }
-
-    private class CellClickListener extends MouseAdapter {
-
-        private Tile tile;
-        private int row;
-        private int column;
-
-        public CellClickListener(Tile tile, int row, int column) {
-            this.tile = tile;
-            this.row = row;
-            this.column = column;
-        }
-
-        @Override
-        public void mouseClicked(MouseEvent e) {
-            JOptionPane.showMessageDialog(null, "Ficha de Dominó: " + tile.getFirstFace().getValue() + " - " + tile.getSecondFace().getValue() + " (Fila: " + row + ", Columna: " + column + ")");
         }
     }
 
@@ -72,5 +61,3 @@ public class DominoBoardForm extends JFrame {
         form.setVisible(true);
     }
 }
-
-

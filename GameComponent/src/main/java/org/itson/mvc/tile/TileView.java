@@ -38,6 +38,11 @@ public class TileView extends JPanel {
      */
     public TileView(TileModel tileModel) {
         this.tileModel = tileModel;
+        try {
+            drawTile(); // Carga la imagen de la ficha al crear la vista
+        } catch (IOException e) {
+            Logger.getLogger(TileController.class.getName()).log(Level.SEVERE, null, e);
+        }
     }
 
     public void drawTile() throws IOException {
